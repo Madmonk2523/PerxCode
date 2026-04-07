@@ -117,6 +117,9 @@ struct LoginView: View {
 
     private func normalizeError(_ message: String) -> String {
         let lower = message.lowercased()
+        if lower.contains("googleservice-info") || (lower.contains("missing") && lower.contains("plist")) {
+            return "Missing GoogleService-Info.plist in the app target. Add it in Xcode to enable authentication."
+        }
         if lower.contains("invalid") || lower.contains("credential") { return "Invalid email or password." }
         if lower.contains("too many") { return "Too many attempts. Try again later." }
         if lower.contains("network") { return "Network issue. Check your connection." }

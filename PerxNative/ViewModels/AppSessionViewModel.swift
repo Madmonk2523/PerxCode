@@ -15,12 +15,17 @@ final class AppSessionViewModel: ObservableObject {
     private var authListener: AuthStateDidChangeListenerHandle?
 
     init() {
-        FirebaseService.shared.configureIfNeeded()
-        startAuthListener()
+        let configured = FirebaseService.shared.configureIfNeeded()
+        if configured {
+            startAuthListener()
+        } else {
+            state = .loggedOut
+            currentUser = nil
+        }
     }
 
     deinit {
-        if let authListener {
+        if let authListener, FirebaseService.shared.isConfigured {
             Auth.auth().removeStateDidChangeListener(authListener)
         }
     }

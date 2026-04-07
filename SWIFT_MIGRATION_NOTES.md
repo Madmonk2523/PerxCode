@@ -1,6 +1,6 @@
 # Perx Native iOS (Swift)
 
-This folder contains the in-progress native SwiftUI migration of your current React Native PERX app.
+This repository now includes a committed Xcode project and SwiftUI app source.
 
 ## Included parity scope
 
@@ -18,17 +18,17 @@ This folder contains the in-progress native SwiftUI migration of your current Re
 - Services: Firebase integration, claim engine, profile prefs, theme
 - View models for auth session, map logic, wallet logic, profile logic
 - SwiftUI screens for auth, tabs, map, wallet, profile, and redemption sheet
+- Committed Xcode project: `PerxNative.xcodeproj`
 
 ## Xcode setup (required)
 
-1. On a Mac, create a new iOS App project in Xcode named `PerxNative`.
-2. Copy all files from this folder into that Xcode project.
-3. Add iOS deployment target 17.0+ (MapKit camera APIs used here).
-4. Add Firebase via Swift Package Manager:
+1. On a Mac, open `PerxNative.xcodeproj`.
+2. Confirm iOS deployment target 17.0+.
+3. Add Firebase via Swift Package Manager if not already resolved:
    - `https://github.com/firebase/firebase-ios-sdk`
    - Products: `FirebaseAuth`, `FirebaseFirestore`, `FirebaseCore`
-5. Add your `GoogleService-Info.plist` to the target.
-6. In target Signing & Capabilities, enable:
+4. Add your `GoogleService-Info.plist` to the target.
+5. In target Signing & Capabilities, enable:
    - Location updates (if you keep background location parity)
    - Push notifications (if you add claim notifications parity next)
 

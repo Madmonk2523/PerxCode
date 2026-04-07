@@ -1,0 +1,434 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1A2B3C4D5E6F700000000041 /* PerxNativeApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F700000000021 /* PerxNativeApp.swift */; };
+		1A2B3C4D5E6F700000000042 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F700000000022 /* ContentView.swift */; };
+		1A2B3C4D5E6F700000000043 /* PerxModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F700000000023 /* PerxModels.swift */; };
+		1A2B3C4D5E6F700000000044 /* DemoModeService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F700000000024 /* DemoModeService.swift */; };
+		1A2B3C4D5E6F700000000045 /* DemoPolicy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F700000000025 /* DemoPolicy.swift */; };
+		1A2B3C4D5E6F700000000046 /* FirebaseService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F700000000026 /* FirebaseService.swift */; };
+		1A2B3C4D5E6F700000000047 /* PerxNotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F700000000027 /* PerxNotificationService.swift */; };
+		1A2B3C4D5E6F700000000048 /* PerxTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F700000000028 /* PerxTheme.swift */; };
+		1A2B3C4D5E6F700000000049 /* ProfilePrefsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F700000000029 /* ProfilePrefsService.swift */; };
+		1A2B3C4D5E6F70000000004A /* AppSessionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70000000002A /* AppSessionViewModel.swift */; };
+		1A2B3C4D5E6F70000000004B /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70000000002B /* MapViewModel.swift */; };
+		1A2B3C4D5E6F70000000004C /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70000000002C /* ProfileViewModel.swift */; };
+		1A2B3C4D5E6F70000000004D /* WalletViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70000000002D /* WalletViewModel.swift */; };
+		1A2B3C4D5E6F70000000004E /* AuthRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70000000002E /* AuthRootView.swift */; };
+		1A2B3C4D5E6F70000000004F /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F70000000002F /* LoginView.swift */; };
+		1A2B3C4D5E6F700000000050 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F700000000030 /* SignupView.swift */; };
+		1A2B3C4D5E6F700000000051 /* MainTabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F700000000031 /* MainTabView.swift */; };
+		1A2B3C4D5E6F700000000052 /* MapScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F700000000032 /* MapScreenView.swift */; };
+		1A2B3C4D5E6F700000000053 /* ProfileScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F700000000033 /* ProfileScreenView.swift */; };
+		1A2B3C4D5E6F700000000054 /* RedemptionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F700000000034 /* RedemptionSheet.swift */; };
+		1A2B3C4D5E6F700000000055 /* RewardLocationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F700000000035 /* RewardLocationSheet.swift */; };
+		1A2B3C4D5E6F700000000056 /* WalletScreenView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F700000000036 /* WalletScreenView.swift */; };
+		1A2B3C4D5E6F700000000057 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = 1A2B3C4D5E6F700000000061 /* FirebaseCore */; };
+		1A2B3C4D5E6F700000000058 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 1A2B3C4D5E6F700000000062 /* FirebaseAuth */; };
+		1A2B3C4D5E6F700000000059 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 1A2B3C4D5E6F700000000063 /* FirebaseFirestore */; };
+		1A2B3C4D5E6F70000000005A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A2B3C4D5E6F700000000037 /* Assets.xcassets */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1A2B3C4D5E6F70000000000C /* PerxNative.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PerxNative.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		1A2B3C4D5E6F700000000021 /* PerxNativeApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerxNativeApp.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F700000000022 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F700000000023 /* PerxModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerxModels.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F700000000024 /* DemoModeService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoModeService.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F700000000025 /* DemoPolicy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoPolicy.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F700000000026 /* FirebaseService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirebaseService.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F700000000027 /* PerxNotificationService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerxNotificationService.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F700000000028 /* PerxTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerxTheme.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F700000000029 /* ProfilePrefsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfilePrefsService.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70000000002A /* AppSessionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSessionViewModel.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70000000002B /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70000000002C /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70000000002D /* WalletViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletViewModel.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70000000002E /* AuthRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthRootView.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F70000000002F /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F700000000030 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F700000000031 /* MainTabView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabView.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F700000000032 /* MapScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapScreenView.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F700000000033 /* ProfileScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileScreenView.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F700000000034 /* RedemptionSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RedemptionSheet.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F700000000035 /* RewardLocationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RewardLocationSheet.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F700000000036 /* WalletScreenView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WalletScreenView.swift; sourceTree = "<group>"; };
+		1A2B3C4D5E6F700000000037 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1A2B3C4D5E6F700000000011 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A2B3C4D5E6F700000000057 /* FirebaseCore in Frameworks */,
+				1A2B3C4D5E6F700000000058 /* FirebaseAuth in Frameworks */,
+				1A2B3C4D5E6F700000000059 /* FirebaseFirestore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1A2B3C4D5E6F700000000002 = {
+			isa = PBXGroup;
+			children = (
+				1A2B3C4D5E6F700000000004 /* PerxNative */,
+				1A2B3C4D5E6F70000000000B /* Frameworks */,
+				1A2B3C4D5E6F700000000003 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		1A2B3C4D5E6F700000000003 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1A2B3C4D5E6F70000000000C /* PerxNative.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1A2B3C4D5E6F700000000004 /* PerxNative */ = {
+			isa = PBXGroup;
+			children = (
+				1A2B3C4D5E6F700000000021 /* PerxNativeApp.swift */,
+				1A2B3C4D5E6F700000000022 /* ContentView.swift */,
+				1A2B3C4D5E6F700000000037 /* Assets.xcassets */,
+				1A2B3C4D5E6F700000000005 /* Models */,
+				1A2B3C4D5E6F700000000006 /* Services */,
+				1A2B3C4D5E6F700000000007 /* ViewModels */,
+				1A2B3C4D5E6F700000000008 /* Views */,
+			);
+			path = PerxNative;
+			sourceTree = "<group>";
+		};
+		1A2B3C4D5E6F700000000005 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				1A2B3C4D5E6F700000000023 /* PerxModels.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		1A2B3C4D5E6F700000000006 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				1A2B3C4D5E6F700000000024 /* DemoModeService.swift */,
+				1A2B3C4D5E6F700000000025 /* DemoPolicy.swift */,
+				1A2B3C4D5E6F700000000026 /* FirebaseService.swift */,
+				1A2B3C4D5E6F700000000027 /* PerxNotificationService.swift */,
+				1A2B3C4D5E6F700000000028 /* PerxTheme.swift */,
+				1A2B3C4D5E6F700000000029 /* ProfilePrefsService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		1A2B3C4D5E6F700000000007 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				1A2B3C4D5E6F70000000002A /* AppSessionViewModel.swift */,
+				1A2B3C4D5E6F70000000002B /* MapViewModel.swift */,
+				1A2B3C4D5E6F70000000002C /* ProfileViewModel.swift */,
+				1A2B3C4D5E6F70000000002D /* WalletViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		1A2B3C4D5E6F700000000008 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				1A2B3C4D5E6F700000000009 /* Auth */,
+				1A2B3C4D5E6F70000000000A /* Main */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		1A2B3C4D5E6F700000000009 /* Auth */ = {
+			isa = PBXGroup;
+			children = (
+				1A2B3C4D5E6F70000000002E /* AuthRootView.swift */,
+				1A2B3C4D5E6F70000000002F /* LoginView.swift */,
+				1A2B3C4D5E6F700000000030 /* SignupView.swift */,
+			);
+			path = Auth;
+			sourceTree = "<group>";
+		};
+		1A2B3C4D5E6F70000000000A /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				1A2B3C4D5E6F700000000031 /* MainTabView.swift */,
+				1A2B3C4D5E6F700000000032 /* MapScreenView.swift */,
+				1A2B3C4D5E6F700000000033 /* ProfileScreenView.swift */,
+				1A2B3C4D5E6F700000000034 /* RedemptionSheet.swift */,
+				1A2B3C4D5E6F700000000035 /* RewardLocationSheet.swift */,
+				1A2B3C4D5E6F700000000036 /* WalletScreenView.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		1A2B3C4D5E6F70000000000B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1A2B3C4D5E6F70000000000D /* PerxNative */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1A2B3C4D5E6F70000000000F /* Build configuration list for PBXNativeTarget "PerxNative" */;
+			buildPhases = (
+				1A2B3C4D5E6F700000000010 /* Sources */,
+				1A2B3C4D5E6F700000000011 /* Frameworks */,
+				1A2B3C4D5E6F700000000012 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = PerxNative;
+			packageProductDependencies = (
+				1A2B3C4D5E6F700000000061 /* FirebaseCore */,
+				1A2B3C4D5E6F700000000062 /* FirebaseAuth */,
+				1A2B3C4D5E6F700000000063 /* FirebaseFirestore */,
+			);
+			productName = PerxNative;
+			productReference = 1A2B3C4D5E6F70000000000C /* PerxNative.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1A2B3C4D5E6F700000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					1A2B3C4D5E6F70000000000D = {
+						CreatedOnToolsVersion = 16.0;
+					};
+				};
+			};
+			buildConfigurationList = 1A2B3C4D5E6F70000000000E /* Build configuration list for PBXProject "PerxNative" */;
+			compatibilityVersion = "Xcode 15.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1A2B3C4D5E6F700000000002;
+			packageReferences = (
+				1A2B3C4D5E6F700000000060 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
+			productRefGroup = 1A2B3C4D5E6F700000000003 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1A2B3C4D5E6F70000000000D /* PerxNative */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1A2B3C4D5E6F700000000012 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A2B3C4D5E6F70000000005A /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1A2B3C4D5E6F700000000010 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1A2B3C4D5E6F700000000041 /* PerxNativeApp.swift in Sources */,
+				1A2B3C4D5E6F700000000042 /* ContentView.swift in Sources */,
+				1A2B3C4D5E6F700000000043 /* PerxModels.swift in Sources */,
+				1A2B3C4D5E6F700000000044 /* DemoModeService.swift in Sources */,
+				1A2B3C4D5E6F700000000045 /* DemoPolicy.swift in Sources */,
+				1A2B3C4D5E6F700000000046 /* FirebaseService.swift in Sources */,
+				1A2B3C4D5E6F700000000047 /* PerxNotificationService.swift in Sources */,
+				1A2B3C4D5E6F700000000048 /* PerxTheme.swift in Sources */,
+				1A2B3C4D5E6F700000000049 /* ProfilePrefsService.swift in Sources */,
+				1A2B3C4D5E6F70000000004A /* AppSessionViewModel.swift in Sources */,
+				1A2B3C4D5E6F70000000004B /* MapViewModel.swift in Sources */,
+				1A2B3C4D5E6F70000000004C /* ProfileViewModel.swift in Sources */,
+				1A2B3C4D5E6F70000000004D /* WalletViewModel.swift in Sources */,
+				1A2B3C4D5E6F70000000004E /* AuthRootView.swift in Sources */,
+				1A2B3C4D5E6F70000000004F /* LoginView.swift in Sources */,
+				1A2B3C4D5E6F700000000050 /* SignupView.swift in Sources */,
+				1A2B3C4D5E6F700000000051 /* MainTabView.swift in Sources */,
+				1A2B3C4D5E6F700000000052 /* MapScreenView.swift in Sources */,
+				1A2B3C4D5E6F700000000053 /* ProfileScreenView.swift in Sources */,
+				1A2B3C4D5E6F700000000054 /* RedemptionSheet.swift in Sources */,
+				1A2B3C4D5E6F700000000055 /* RewardLocationSheet.swift in Sources */,
+				1A2B3C4D5E6F700000000056 /* WalletScreenView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1A2B3C4D5E6F700000000013 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		1A2B3C4D5E6F700000000014 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		1A2B3C4D5E6F700000000015 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "PERX uses your camera so you can take a profile picture.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "PERX uses your location to detect nearby rewards.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "PERX uses your photo library so you can select a profile picture.";
+				INFOPLIST_KEY_NSUserNotificationUsageDescription = "PERX sends notifications when rewards are claimed.";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.madmonk.perxnative;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1A2B3C4D5E6F700000000016 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "PERX uses your camera so you can take a profile picture.";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "PERX uses your location to detect nearby rewards.";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "PERX uses your photo library so you can select a profile picture.";
+				INFOPLIST_KEY_NSUserNotificationUsageDescription = "PERX sends notifications when rewards are claimed.";
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.madmonk.perxnative;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1A2B3C4D5E6F70000000000E /* Build configuration list for PBXProject "PerxNative" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A2B3C4D5E6F700000000013 /* Debug */,
+				1A2B3C4D5E6F700000000014 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1A2B3C4D5E6F70000000000F /* Build configuration list for PBXNativeTarget "PerxNative" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1A2B3C4D5E6F700000000015 /* Debug */,
+				1A2B3C4D5E6F700000000016 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1A2B3C4D5E6F700000000060 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1A2B3C4D5E6F700000000061 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1A2B3C4D5E6F700000000060 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		1A2B3C4D5E6F700000000062 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1A2B3C4D5E6F700000000060 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		1A2B3C4D5E6F700000000063 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1A2B3C4D5E6F700000000060 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 1A2B3C4D5E6F700000000001 /* Project object */;
+}
