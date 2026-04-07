@@ -1,50 +1,39 @@
-# Welcome to your Expo app 👋
+# PERX iOS (SwiftUI)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This repository is Swift-only and intended for native iOS development in Xcode.
 
-## Get started
+## Project location
 
-1. Install dependencies
+All app source code is under `ios-swift/PerxNative`.
 
-   ```bash
-   npm install
-   ```
+## Open in Xcode
 
-2. Start the app
+1. On macOS, create or open your iOS app project in Xcode.
+2. Add all files from `ios-swift/PerxNative` to your app target.
+3. Set iOS deployment target to 17.0+.
+4. Add Firebase with Swift Package Manager:
+   - `https://github.com/firebase/firebase-ios-sdk`
+   - Products: `FirebaseCore`, `FirebaseAuth`, `FirebaseFirestore`
+5. Add `GoogleService-Info.plist` to the app target.
 
-   ```bash
-   npx expo start
-   ```
+## Required iOS capabilities and permissions
 
-In the output, you'll find options to open the app in a
+- Push Notifications (if using claim notifications)
+- Location usage descriptions in `Info.plist`
+- Camera/Photos usage descriptions for avatar selection
+- Background modes only if you explicitly keep background location behavior
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Run
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+1. Select an iOS Simulator or connected iPhone in Xcode.
+2. Build and run.
+3. Validate flows: auth, map, wallet, profile, claim notifications.
 
-## Get a fresh project
+## App Store path
 
-When you're ready, run:
+1. Set Signing and Team in Xcode.
+2. Increment Version/Build.
+3. Product -> Archive.
+4. Upload to App Store Connect and submit for review.
 
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+For migration and implementation details, see `ios-swift/README.md`.
