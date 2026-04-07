@@ -9,9 +9,23 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "Geo Rewards uses your location to detect nearby businesses and award tokens.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "Geo Rewards can keep checking nearby rewards while the app is in the background.",
+        "UIBackgroundModes": [
+          "location"
+        ]
+      },
       "supportsTablet": true
     },
     "android": {
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "POST_NOTIFICATIONS",
+        "CAMERA"
+      ],
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
         "foregroundImage": "./assets/images/android-icon-foreground.png",
@@ -26,7 +40,6 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router",
       [
         "expo-splash-screen",
         {
@@ -38,11 +51,26 @@
             "backgroundColor": "#000000"
           }
         }
+      ],
+      "expo-notifications",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow PERX to access your photos so you can choose a profile picture.",
+          "cameraPermission": "Allow PERX to use your camera so you can take a profile picture."
+        }
       ]
     ],
     "experiments": {
-      "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "firebaseApiKey": "AIzaSyATjIFByHZBBGr1R-L7euVmjohoOQm0nJA",
+      "firebaseAuthDomain": "app-idea-adam.firebaseapp.com",
+      "firebaseProjectId": "app-idea-adam",
+      "firebaseStorageBucket": "app-idea-adam.firebasestorage.app",
+      "firebaseMessagingSenderId": "871917956722",
+      "firebaseAppId": "1:871917956722:web:4772cf99fde973cca09ceb"
     }
   }
 }
