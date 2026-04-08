@@ -1,6 +1,5 @@
 import Foundation
 import CoreLocation
-import MapKit
 
 @MainActor
 final class MapViewModel: NSObject, ObservableObject {
@@ -17,7 +16,11 @@ final class MapViewModel: NSObject, ObservableObject {
     @Published var autoClaiming = false
     @Published var toastMessage: String?
     @Published var teleportArmed = false
-    @Published var cameraPosition: MapCameraPosition = .automatic
+    @Published private(set) var cameraTarget: CLLocationCoordinate2D?
+    @Published private(set) var cameraDistance: CLLocationDistance = 360
+    @Published private(set) var cameraHeading: CLLocationDirection = 0
+    @Published private(set) var cameraPitch: Double = 24
+    @Published private(set) var cameraUpdateID = UUID()
     @Published private(set) var canUseDemoTools = false
 
     private let demoService = DemoModeService.shared
@@ -28,7 +31,6 @@ final class MapViewModel: NSObject, ObservableObject {
     private var overrideUntil: TimeInterval = 0
     private var bootstrapped = false
     private var sceneActive = true
-    private var currentUserEmail = ""
 
     var markerPoints: [RewardLocation] {
         demoService.buildWalkableDemoLocations(center: anchorLocation)
@@ -38,14 +40,15 @@ final class MapViewModel: NSObject, ObservableObject {
         guard !bootstrapped else { return }
         bootstrapped = true
 
-        currentUserEmail = (email ?? "").trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
-        let demoAllowed = DemoPolicy.isDemoAllowed(currentUserEmail)
+        let normalizedEmail = (email ?? "").trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        let demoAllowed = DemoPolicy.isDemoAllowed(normalizedEmail)
         canUseDemoTools = demoAllowed
 
         demoModeOn = demoAllowed ? demoService.loadDemoMode() : false
 
         if let savedAnchor = demoService.loadDemoAnchor() {
             anchorLocation = savedAnchor
+            updateCamera(to: savedAnchor, distance: 360, heading: 0, pitch: 24)
         }
 
         let wallet = demoService.loadWallet()
@@ -104,26 +107,12 @@ final class MapViewModel: NSObject, ObservableObject {
         selectedLocation = location
         sheetVisible = true
         teleportArmed = false
-        cameraPosition = .camera(
-            MapCamera(
-                centerCoordinate: location.coordinate,
-                distance: 300,
-                heading: 0,
-                pitch: 35
-            )
-        )
+        updateCamera(to: location.coordinate, distance: 300, heading: 0, pitch: 35)
     }
 
     func centerOnMe() {
         guard let current = userLocation else { return }
-        cameraPosition = .camera(
-            MapCamera(
-                centerCoordinate: current,
-                distance: 320,
-                heading: 0,
-                pitch: 28
-            )
-        )
+        updateCamera(to: current, distance: 320, heading: 0, pitch: 28)
         toastMessage = "Centered on your live location"
     }
 
@@ -137,14 +126,7 @@ final class MapViewModel: NSObject, ObservableObject {
         userLocation = coordinate
         teleportArmed = false
         toastMessage = "Teleported to selected point"
-        cameraPosition = .camera(
-            MapCamera(
-                centerCoordinate: coordinate,
-                distance: 300,
-                heading: 8,
-                pitch: 28
-            )
-        )
+        updateCamera(to: coordinate, distance: 300, heading: 8, pitch: 28)
     }
 
     func cooldownString(for locationId: String) -> String {
@@ -185,10 +167,12 @@ final class MapViewModel: NSObject, ObservableObject {
         guard sceneActive else { return }
         sessionTimer?.invalidate()
         sessionTimer = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: true) { [weak self] _ in
-            guard let self else { return }
-            let state = self.demoService.getSessionState()
-            self.claimedThisSession = state.claimedLocationIds
-            self.sessionRemaining = state.remaining
+            Task { @MainActor [weak self] in
+                guard let self else { return }
+                let state = self.demoService.getSessionState()
+                self.claimedThisSession = state.claimedLocationIds
+                self.sessionRemaining = state.remaining
+            }
         }
     }
 
@@ -237,15 +221,26 @@ final class MapViewModel: NSObject, ObservableObject {
         autoClaimTimer = nil
         sessionTimer = nil
     }
-}
 
-extension MapViewModel: CLLocationManagerDelegate {
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        switch manager.authorizationStatus {
+    private func updateCamera(
+        to coordinate: CLLocationCoordinate2D,
+        distance: CLLocationDistance,
+        heading: CLLocationDirection,
+        pitch: Double
+    ) {
+        cameraTarget = coordinate
+        cameraDistance = distance
+        cameraHeading = heading
+        cameraPitch = pitch
+        cameraUpdateID = UUID()
+    }
+
+    private func applyAuthorizationStatus(_ status: CLAuthorizationStatus) {
+        switch status {
         case .authorizedWhenInUse, .authorizedAlways:
             permissionDenied = false
             loadingLocation = false
-            manager.startUpdatingLocation()
+            locationManager.startUpdatingLocation()
         case .denied, .restricted:
             permissionDenied = true
             loadingLocation = false
@@ -256,28 +251,45 @@ extension MapViewModel: CLLocationManagerDelegate {
         }
     }
 
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let location = locations.last else { return }
-
+    private func handleLocationUpdate(_ coordinate: CLLocationCoordinate2D) {
         if demoModeOn, Date().timeIntervalSince1970 < overrideUntil {
             return
         }
 
-        let coordinate = location.coordinate
         if anchorLocation == nil {
             anchorLocation = coordinate
             demoService.saveDemoAnchor(coordinate)
-            cameraPosition = .camera(
-                MapCamera(
-                    centerCoordinate: coordinate,
-                    distance: 360,
-                    heading: 0,
-                    pitch: 24
-                )
-            )
+            updateCamera(to: coordinate, distance: 360, heading: 0, pitch: 24)
         }
 
         userLocation = coordinate
         loadingLocation = false
+    }
+
+    private func handleLocationError(_ error: Error) {
+        loadingLocation = false
+        toastMessage = "Location update failed: \(error.localizedDescription)"
+    }
+}
+
+extension MapViewModel: CLLocationManagerDelegate {
+    nonisolated func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
+        let status = manager.authorizationStatus
+        Task { @MainActor [weak self] in
+            self?.applyAuthorizationStatus(status)
+        }
+    }
+
+    nonisolated func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let coordinate = locations.last?.coordinate else { return }
+        Task { @MainActor [weak self] in
+            self?.handleLocationUpdate(coordinate)
+        }
+    }
+
+    nonisolated func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        Task { @MainActor [weak self] in
+            self?.handleLocationError(error)
+        }
     }
 }

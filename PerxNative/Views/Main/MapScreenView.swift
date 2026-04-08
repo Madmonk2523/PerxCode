@@ -6,6 +6,7 @@ struct MapScreenView: View {
     @EnvironmentObject private var session: AppSessionViewModel
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var vm = MapViewModel()
+    @State private var cameraPosition: MapCameraPosition = .automatic
 
     var body: some View {
         ZStack(alignment: .top) {
@@ -55,11 +56,22 @@ struct MapScreenView: View {
         .onChange(of: scenePhase) { _, newValue in
             vm.setSceneActive(newValue == .active)
         }
+        .onChange(of: vm.cameraUpdateID) { _, _ in
+            guard let target = vm.cameraTarget else { return }
+            cameraPosition = .camera(
+                MapCamera(
+                    centerCoordinate: target,
+                    distance: vm.cameraDistance,
+                    heading: vm.cameraHeading,
+                    pitch: vm.cameraPitch
+                )
+            )
+        }
         .animation(.easeInOut(duration: 0.2), value: vm.toastMessage)
     }
 
     private var mapLayer: some View {
-        Map(position: $vm.cameraPosition) {
+        Map(position: $cameraPosition) {
             if let user = vm.userLocation {
                 Annotation("You", coordinate: user) {
                     Circle()
