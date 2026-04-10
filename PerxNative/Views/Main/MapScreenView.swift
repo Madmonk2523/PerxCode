@@ -71,42 +71,75 @@ struct MapScreenView: View {
     }
 
     private var mapLayer: some View {
-        Map(position: $cameraPosition) {
-            if let user = vm.userLocation {
-                Annotation("You", coordinate: user) {
-                    Circle()
-                        .fill(Color.blue)
-                        .frame(width: 16, height: 16)
-                        .overlay(Circle().stroke(.white, lineWidth: 2))
+        MapReader { proxy in
+            Map(position: $cameraPosition) {
+                if let user = vm.userLocation {
+                    Annotation("You", coordinate: user) {
+                        Circle()
+                            .fill(Color.blue)
+                            .frame(width: 16, height: 16)
+                            .overlay(Circle().stroke(.white, lineWidth: 2))
+                    }
                 }
-            }
 
-            ForEach(vm.markerPoints) { location in
-                Annotation(location.name, coordinate: location.coordinate) {
-                    Button {
-                        vm.selectLocation(location)
-                    } label: {
-                        VStack(spacing: 2) {
+                ForEach(vm.markerPoints) { location in
+                    Annotation("", coordinate: location.coordinate) {
+                        Button {
+                            vm.selectLocation(location)
+                        } label: {
                             Circle()
-                                .fill(vm.claimedThisSession.contains(location.id) ? Color.green : Color(red: 0.376, green: 0.647, blue: 0.98))
+                                .fill(vm.claimedThisSession.contains(location.id) ? Color.green : Color.purple)
                                 .frame(width: 20, height: 20)
                                 .overlay(Circle().stroke(.white, lineWidth: 1.5))
-                            Text("$\(location.reward)")
-                                .font(.system(size: 11, weight: .bold))
-                                .foregroundStyle(.white)
                         }
+                        .buttonStyle(.plain)
                     }
-                    .buttonStyle(.plain)
                 }
             }
+            .mapStyle(.standard(elevation: .realistic))
+            .gesture(
+                SpatialTapGesture().onEnded { value in
+                    guard vm.teleportArmed else { return }
+                    if let coordinate = proxy.convert(value.location, from: .local) {
+                        vm.teleport(to: coordinate, userEmail: session.currentUser?.email)
+                    }
+                }
+            )
         }
-        .mapStyle(.standard(elevation: .realistic))
     }
 
     private var topHud: some View {
         HStack(spacing: 10) {
-            hudPill(title: "Wallet", value: "$\(vm.walletBalance)")
-            hudPill(title: "Session left", value: "\(vm.sessionRemaining)")
+            if vm.canUseDemoTools {
+                Toggle(isOn: Binding(
+                    get: { vm.demoModeOn },
+                    set: { vm.setDemoMode($0) }
+                )) {
+                    Text("Demo")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(vm.demoModeOn ? Color.green : .white)
+                }
+                .toggleStyle(.switch)
+                .tint(.green)
+                .padding(.horizontal, 12)
+                .padding(.vertical, 8)
+                .background((vm.demoModeOn ? Color.green : Color.black).opacity(0.26))
+                .clipShape(Capsule())
+
+                Button {
+                    vm.teleportArmed = true
+                    vm.teleportArmedHint()
+                } label: {
+                    Label("Teleport", systemImage: "scope")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(vm.teleportArmed ? Color.green : .white)
+                        .padding(.horizontal, 14)
+                        .padding(.vertical, 10)
+                        .background(Color.black.opacity(0.65))
+                        .clipShape(Capsule())
+                }
+            }
+
             if vm.autoClaiming {
                 ProgressView()
                     .tint(.white)
@@ -143,6 +176,9 @@ struct MapScreenView: View {
             }
 
             HStack(spacing: 10) {
+                hudPill(title: "Wallet", value: "$\(vm.walletBalance)")
+                hudPill(title: "Session left", value: "\(vm.sessionRemaining)")
+
                 Button {
                     vm.centerOnMe()
                 } label: {
@@ -153,45 +189,6 @@ struct MapScreenView: View {
                         .padding(.vertical, 10)
                         .background(Color.black.opacity(0.65))
                         .clipShape(Capsule())
-                }
-
-                if vm.canUseDemoTools {
-                    Toggle(isOn: Binding(
-                        get: { vm.demoModeOn },
-                        set: { vm.setDemoMode($0) }
-                    )) {
-                        Text("Demo")
-                            .font(.system(size: 13, weight: .semibold))
-                            .foregroundStyle(.white)
-                    }
-                    .toggleStyle(.switch)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 8)
-                    .background(Color.black.opacity(0.65))
-                    .clipShape(Capsule())
-
-                    Button {
-                        if vm.teleportArmed {
-                            if let selected = vm.selectedLocation {
-                                vm.teleport(to: selected.coordinate, userEmail: session.currentUser?.email)
-                            } else if let fallback = vm.markerPoints.first {
-                                vm.teleport(to: fallback.coordinate, userEmail: session.currentUser?.email)
-                            } else {
-                                vm.toastMessage = "No location available for teleport"
-                            }
-                        } else {
-                            vm.teleportArmed = true
-                            vm.toastMessage = "Select a pin, then tap Teleport again"
-                        }
-                    } label: {
-                        Label("Teleport", systemImage: "scope")
-                            .font(.system(size: 13, weight: .semibold))
-                            .foregroundStyle(vm.teleportArmed ? Color.green : .white)
-                            .padding(.horizontal, 14)
-                            .padding(.vertical, 10)
-                            .background(Color.black.opacity(0.65))
-                            .clipShape(Capsule())
-                    }
                 }
             }
         }
@@ -221,7 +218,7 @@ struct MapScreenView: View {
             .background(Color.black.opacity(0.75))
             .clipShape(Capsule())
             .onAppear {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1.6) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
                     if vm.toastMessage == message {
                         vm.toastMessage = nil
                     }

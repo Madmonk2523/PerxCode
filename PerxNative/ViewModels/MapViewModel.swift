@@ -31,6 +31,7 @@ final class MapViewModel: NSObject, ObservableObject {
     private var overrideUntil: TimeInterval = 0
     private var bootstrapped = false
     private var sceneActive = true
+    private var activeEmail: String?
 
     var markerPoints: [RewardLocation] {
         demoService.buildWalkableDemoLocations(center: anchorLocation)
@@ -41,6 +42,8 @@ final class MapViewModel: NSObject, ObservableObject {
         bootstrapped = true
 
         let normalizedEmail = (email ?? "").trimmingCharacters(in: .whitespacesAndNewlines).lowercased()
+        activeEmail = normalizedEmail
+        demoService.configureScope(email: normalizedEmail)
         let demoAllowed = DemoPolicy.isDemoAllowed(normalizedEmail)
         canUseDemoTools = demoAllowed
 
@@ -86,6 +89,12 @@ final class MapViewModel: NSObject, ObservableObject {
 
         demoModeOn = value
         demoService.setDemoMode(value)
+        if value {
+            locationManager.stopUpdatingLocation()
+            loadingLocation = false
+        } else {
+            startLocationTracking()
+        }
         if !value {
             teleportArmed = false
         }
@@ -124,9 +133,15 @@ final class MapViewModel: NSObject, ObservableObject {
 
         overrideUntil = Date().timeIntervalSince1970 + (3 * 60)
         userLocation = coordinate
+        selectedLocation = nearestLocation(to: coordinate)
+        sheetVisible = selectedLocation != nil
         teleportArmed = false
         toastMessage = "Teleported to selected point"
-        updateCamera(to: coordinate, distance: 300, heading: 8, pitch: 28)
+        updateCamera(to: coordinate, distance: 230, heading: 12, pitch: 38)
+    }
+
+    func teleportArmedHint() {
+        toastMessage = "Tap anywhere on the map to teleport"
     }
 
     func cooldownString(for locationId: String) -> String {
@@ -150,7 +165,10 @@ final class MapViewModel: NSObject, ObservableObject {
         permissionDenied = false
 
         locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.desiredAccuracy = kCLLocationAccuracyBestForNavigation
+        locationManager.distanceFilter = kCLDistanceFilterNone
+        locationManager.activityType = .fitness
+        locationManager.pausesLocationUpdatesAutomatically = false
 
         let status = locationManager.authorizationStatus
         if status == .notDetermined {
@@ -215,6 +233,14 @@ final class MapViewModel: NSObject, ObservableObject {
         autoClaiming = false
     }
 
+    private func nearestLocation(to coordinate: CLLocationCoordinate2D) -> RewardLocation? {
+        markerPoints
+            .min(by: {
+                demoService.distance(user: coordinate, target: $0.coordinate) <
+                demoService.distance(user: coordinate, target: $1.coordinate)
+            })
+    }
+
     private func stopTickers() {
         autoClaimTimer?.invalidate()
         sessionTimer?.invalidate()
@@ -252,7 +278,12 @@ final class MapViewModel: NSObject, ObservableObject {
     }
 
     private func handleLocationUpdate(_ coordinate: CLLocationCoordinate2D) {
-        if demoModeOn, Date().timeIntervalSince1970 < overrideUntil {
+        if demoModeOn {
+            loadingLocation = false
+            return
+        }
+
+        if Date().timeIntervalSince1970 < overrideUntil {
             return
         }
 
@@ -264,6 +295,10 @@ final class MapViewModel: NSObject, ObservableObject {
 
         userLocation = coordinate
         loadingLocation = false
+
+        if selectedLocation == nil {
+            selectedLocation = nearestLocation(to: coordinate)
+        }
     }
 
     private func handleLocationError(_ error: Error) {

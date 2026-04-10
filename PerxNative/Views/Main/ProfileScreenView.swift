@@ -30,10 +30,7 @@ struct ProfileScreenView: View {
                 guard let newItem else { return }
                 Task {
                     if let data = try? await newItem.loadTransferable(type: Data.self) {
-                        let fileName = "perx-avatar-\(Int(Date().timeIntervalSince1970)).jpg"
-                        let targetURL = FileManager.default.temporaryDirectory.appendingPathComponent(fileName)
-                        try? data.write(to: targetURL)
-                        vm.setAvatarPath(targetURL.path)
+                        vm.setAvatarData(data)
                     }
                 }
             }

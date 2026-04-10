@@ -7,15 +7,17 @@ final class DemoModeService {
 
     private init() {}
 
-    private let demoModeKey = "perx_demo_mode_v1"
-    private let demoWalletKey = "perx_demo_wallet_v1"
-    private let demoAnchorKey = "perx_demo_anchor_v1"
+    private let demoModeKeyBase = "perx_demo_mode_v1"
+    private let demoWalletKeyBase = "perx_demo_wallet_v1"
+    private let demoAnchorKeyBase = "perx_demo_anchor_v1"
+    private let sessionStateKeyBase = "perx_demo_session_state_v1"
 
     private let sessionMax = 25
     let locationCooldownSeconds: TimeInterval = 60
 
     private var sessionClaimedLocationAt: [String: TimeInterval] = [:]
     private var sessionClaimTotal = 0
+    private var activeAccountKey = "guest"
 
     let demoCenter = CLLocationCoordinate2D(latitude: 19.3206, longitude: -81.3845)
 
@@ -27,6 +29,20 @@ final class DemoModeService {
         "Ice Cream",
         "Gift Shop"
     ]
+
+    private struct PersistedSessionState: Codable {
+        var claimedAtByLocation: [String: TimeInterval]
+        var totalClaimed: Int
+    }
+
+    func configureScope(email: String?) {
+        let nextKey = accountKey(from: email)
+        guard nextKey != activeAccountKey else { return }
+
+        saveSessionState()
+        activeAccountKey = nextKey
+        restoreSessionState()
+    }
 
     func buildWalkableDemoLocations(center: CLLocationCoordinate2D? = nil) -> [RewardLocation] {
         let origin = center ?? demoCenter
@@ -68,14 +84,15 @@ final class DemoModeService {
     }
 
     func loadDemoMode() -> Bool {
-        if UserDefaults.standard.object(forKey: demoModeKey) == nil {
+        let key = scopedKey(demoModeKeyBase)
+        if UserDefaults.standard.object(forKey: key) == nil {
             return true
         }
-        return UserDefaults.standard.bool(forKey: demoModeKey)
+        return UserDefaults.standard.bool(forKey: key)
     }
 
     func setDemoMode(_ value: Bool) {
-        UserDefaults.standard.set(value, forKey: demoModeKey)
+        UserDefaults.standard.set(value, forKey: scopedKey(demoModeKeyBase))
     }
 
     func saveDemoAnchor(_ coordinate: CLLocationCoordinate2D) {
@@ -84,12 +101,12 @@ final class DemoModeService {
             "longitude": coordinate.longitude
         ]
         if let data = try? JSONEncoder().encode(payload) {
-            UserDefaults.standard.set(data, forKey: demoAnchorKey)
+            UserDefaults.standard.set(data, forKey: scopedKey(demoAnchorKeyBase))
         }
     }
 
     func loadDemoAnchor() -> CLLocationCoordinate2D? {
-        guard let data = UserDefaults.standard.data(forKey: demoAnchorKey),
+        guard let data = UserDefaults.standard.data(forKey: scopedKey(demoAnchorKeyBase)),
               let payload = try? JSONDecoder().decode([String: Double].self, from: data),
               let latitude = payload["latitude"],
               let longitude = payload["longitude"] else {
@@ -99,7 +116,7 @@ final class DemoModeService {
     }
 
     func loadWallet() -> Wallet {
-        guard let data = UserDefaults.standard.data(forKey: demoWalletKey),
+        guard let data = UserDefaults.standard.data(forKey: scopedKey(demoWalletKeyBase)),
               var wallet = try? JSONDecoder().decode(Wallet.self, from: data) else {
             return .empty
         }
@@ -178,6 +195,7 @@ final class DemoModeService {
     func getSessionState() -> SessionState {
         let now = Date().timeIntervalSince1970
         sessionClaimedLocationAt = sessionClaimedLocationAt.filter { now - $0.value < locationCooldownSeconds }
+        saveSessionState()
 
         return SessionState(
             totalClaimed: sessionClaimTotal,
@@ -256,14 +274,59 @@ final class DemoModeService {
 
         sessionClaimedLocationAt[location.id] = now
         sessionClaimTotal += allowedReward
+        saveSessionState()
 
         return (true, claim, wallet, getSessionState())
     }
 
     private func saveWallet(_ wallet: Wallet) {
         if let data = try? JSONEncoder().encode(wallet) {
-            UserDefaults.standard.set(data, forKey: demoWalletKey)
+            UserDefaults.standard.set(data, forKey: scopedKey(demoWalletKeyBase))
         }
+    }
+
+    private func saveSessionState() {
+        let payload = PersistedSessionState(
+            claimedAtByLocation: sessionClaimedLocationAt,
+            totalClaimed: sessionClaimTotal
+        )
+
+        if let data = try? JSONEncoder().encode(payload) {
+            UserDefaults.standard.set(data, forKey: scopedKey(sessionStateKeyBase))
+        }
+    }
+
+    private func restoreSessionState() {
+        guard let data = UserDefaults.standard.data(forKey: scopedKey(sessionStateKeyBase)),
+              let payload = try? JSONDecoder().decode(PersistedSessionState.self, from: data) else {
+            sessionClaimedLocationAt = [:]
+            sessionClaimTotal = 0
+            return
+        }
+
+        sessionClaimedLocationAt = payload.claimedAtByLocation
+        sessionClaimTotal = payload.totalClaimed
+    }
+
+    private func scopedKey(_ base: String) -> String {
+        "\(base)_\(activeAccountKey)"
+    }
+
+    private func accountKey(from email: String?) -> String {
+        let normalized = (email ?? "")
+            .trimmingCharacters(in: .whitespacesAndNewlines)
+            .lowercased()
+
+        if normalized.isEmpty {
+            return "guest"
+        }
+
+        let allowed = normalized.filter { $0.isLetter || $0.isNumber }
+        if allowed.isEmpty {
+            return "guest"
+        }
+
+        return String(allowed.prefix(48))
     }
 
     private func computeBalance(_ claims: [ClaimItem]) -> Int {

@@ -8,6 +8,7 @@ final class WalletViewModel: ObservableObject {
     private let demoService = DemoModeService.shared
 
     func load(for email: String?) {
+        demoService.configureScope(email: email)
         let allowed = isDemoAllowed(email)
         if !allowed {
             wallet = .empty
