@@ -25,15 +25,6 @@ struct MapScreenView: View {
             .padding(.horizontal, 14)
             .padding(.top, 14)
             .padding(.bottom, 24)
-
-            if vm.loadingLocation {
-                ProgressView("Loading map...")
-                    .tint(.white)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, 12)
-                    .background(Color.black.opacity(0.72))
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
-            }
         }
         .sheet(isPresented: $vm.sheetVisible) {
             if let selected = vm.selectedLocation {
@@ -117,13 +108,13 @@ struct MapScreenView: View {
                 )) {
                     Text("Demo")
                         .font(.system(size: 13, weight: .semibold))
-                        .foregroundStyle(vm.demoModeOn ? Color.green : .white)
+                        .foregroundStyle(vm.demoModeOn ? PerxTheme.primary : PerxTheme.textPrimary)
                 }
                 .toggleStyle(.switch)
-                .tint(.green)
+                .tint(PerxTheme.primary)
                 .padding(.horizontal, 12)
                 .padding(.vertical, 8)
-                .background((vm.demoModeOn ? Color.green : Color.black).opacity(0.26))
+                .background(Color.white.opacity(0.8))
                 .clipShape(Capsule())
 
                 Button {
@@ -132,20 +123,20 @@ struct MapScreenView: View {
                 } label: {
                     Label("Teleport", systemImage: "scope")
                         .font(.system(size: 13, weight: .semibold))
-                        .foregroundStyle(vm.teleportArmed ? Color.green : .white)
+                        .foregroundStyle(vm.teleportArmed ? PerxTheme.primary : PerxTheme.textPrimary)
                         .padding(.horizontal, 14)
                         .padding(.vertical, 10)
-                        .background(Color.black.opacity(0.65))
+                        .background(Color.white.opacity(0.8))
                         .clipShape(Capsule())
                 }
             }
 
             if vm.autoClaiming {
                 ProgressView()
-                    .tint(.white)
+                    .tint(PerxTheme.primary)
                     .padding(.horizontal, 12)
                     .padding(.vertical, 10)
-                    .background(Color.black.opacity(0.65))
+                    .background(Color.white.opacity(0.8))
                     .clipShape(Capsule())
             }
         }
@@ -198,14 +189,14 @@ struct MapScreenView: View {
         VStack(alignment: .leading, spacing: 2) {
             Text(title)
                 .font(.system(size: 10, weight: .bold))
-                .foregroundStyle(Color(red: 0.71, green: 0.74, blue: 0.78))
+                .foregroundStyle(PerxTheme.textSecondary)
             Text(value)
                 .font(.system(size: 14, weight: .heavy))
-                .foregroundStyle(.white)
+                .foregroundStyle(PerxTheme.textPrimary)
         }
         .padding(.horizontal, 12)
         .padding(.vertical, 8)
-        .background(Color.black.opacity(0.65))
+        .background(Color.white.opacity(0.8))
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 
@@ -215,7 +206,7 @@ struct MapScreenView: View {
             .foregroundStyle(.white)
             .padding(.horizontal, 14)
             .padding(.vertical, 8)
-            .background(Color.black.opacity(0.75))
+            .background(PerxTheme.primary.opacity(0.92))
             .clipShape(Capsule())
             .onAppear {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {

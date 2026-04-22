@@ -46,7 +46,6 @@ final class MapViewModel: NSObject, ObservableObject {
         demoService.configureScope(email: normalizedEmail)
         let demoAllowed = DemoPolicy.isDemoAllowed(normalizedEmail)
         canUseDemoTools = demoAllowed
-
         demoModeOn = demoAllowed ? demoService.loadDemoMode() : false
 
         if let savedAnchor = demoService.loadDemoAnchor() {

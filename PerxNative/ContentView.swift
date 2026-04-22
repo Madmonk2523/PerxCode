@@ -8,7 +8,7 @@ struct ContentView: View {
             switch session.state {
             case .loading:
                 ProgressView()
-                    .tint(.white)
+                    .tint(PerxTheme.primary)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                     .background(PerxTheme.appBackground.ignoresSafeArea())
             case .loggedOut:

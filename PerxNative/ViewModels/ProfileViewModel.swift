@@ -13,7 +13,6 @@ final class ProfileViewModel: ObservableObject {
         currentEmail = normalizedEmail(email)
         demoService.configureScope(email: currentEmail)
         prefsService.configureScope(email: currentEmail)
-
         let allowed = DemoPolicy.isDemoAllowed(email)
 
         if allowed {

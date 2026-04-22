@@ -18,12 +18,12 @@ struct MainTabView: View {
                     Label("Profile", systemImage: "person.crop.circle")
                 }
         }
-        .tint(.white)
+        .tint(PerxTheme.primary)
         .onAppear {
             let appearance = UITabBarAppearance()
             appearance.configureWithOpaqueBackground()
-            appearance.backgroundColor = UIColor(red: 0.043, green: 0.043, blue: 0.059, alpha: 1)
-            appearance.shadowColor = UIColor.white.withAlphaComponent(0.1)
+            appearance.backgroundColor = UIColor.white
+            appearance.shadowColor = UIColor.black.withAlphaComponent(0.08)
             UITabBar.appearance().standardAppearance = appearance
             UITabBar.appearance().scrollEdgeAppearance = appearance
         }

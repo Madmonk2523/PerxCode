@@ -1,0 +1,39 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isSelf(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    // Businesses are discoverable (read-only) by signed-in users.
+    match /businesses/{businessId} {
+      allow read: if isSignedIn();
+      allow write: if false; // managed via admin tooling / console in MVP
+    }
+
+    // User profile and wallet state.
+    match /users/{uid} {
+      allow create: if isSelf(uid);
+      allow read: if isSelf(uid);
+      allow update: if isSelf(uid);
+      allow delete: if false;
+
+      // Claims are server-authoritative. App can read its own claims.
+      match /claims/{claimId} {
+        allow read: if isSelf(uid);
+        allow write: if false;
+      }
+    }
+
+    // Redemptions are created by server, and finalized by server/business-side.
+    match /redemptions/{redemptionId} {
+      allow read: if isSignedIn() && resource.data.uid == request.auth.uid;
+      allow write: if false;
+    }
+  }
+}
+

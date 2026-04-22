@@ -9,7 +9,7 @@ final class WalletViewModel: ObservableObject {
 
     func load(for email: String?) {
         demoService.configureScope(email: email)
-        let allowed = isDemoAllowed(email)
+        let allowed = DemoPolicy.isDemoAllowed(email)
         if !allowed {
             wallet = .empty
             return

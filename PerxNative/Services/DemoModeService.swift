@@ -65,7 +65,7 @@ final class DemoModeService {
                     reward: (i % 3) + 1,
                     latitude: coord.latitude,
                     longitude: coord.longitude,
-                    radiusMeters: 22
+                    radiusMeters: 220
                 )
             )
         }
